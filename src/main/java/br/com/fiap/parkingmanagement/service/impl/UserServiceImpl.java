@@ -1,5 +1,6 @@
 package br.com.fiap.parkingmanagement.service.impl;
 
+import br.com.fiap.parkingmanagement.enumerator.UserRoleEnum;
 import br.com.fiap.parkingmanagement.model.dto.UserDto;
 import br.com.fiap.parkingmanagement.model.entity.User;
 import br.com.fiap.parkingmanagement.repository.UserRepository;
@@ -62,6 +63,7 @@ public class UserServiceImpl implements UserService {
         user.setCreatedAt(LocalDateTime.now().atOffset(ZoneOffset.of("-03:00")).toLocalDateTime());
         user.setEmail(userDto.email());
         user.setPassword(userDto.password());
+        user.setRole(userDto.role() != null ? userDto.role() : UserRoleEnum.ROLE_USER);
 
         return user;
     }
