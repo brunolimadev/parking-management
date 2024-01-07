@@ -31,6 +31,11 @@ public class User implements UserDetails {
 
     private UserRoleEnum role;
 
+    /**
+     * Método responsável por retornar as autoridades do usuário
+     *
+     * @return
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
