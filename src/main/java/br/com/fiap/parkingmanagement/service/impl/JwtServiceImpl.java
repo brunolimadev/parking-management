@@ -32,7 +32,7 @@ public class JwtServiceImpl implements JwtService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer("Parking Management")
-                    .withSubject(user.getName())
+                    .withSubject(user.getEmail())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException e) {
