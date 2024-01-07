@@ -46,26 +46,51 @@ public class User implements UserDetails {
         }
     }
 
+    /**
+     * Método responsável por retornar o username do usuário
+     *
+     * @return
+     */
     @Override
     public String getUsername() {
         return this.email;
     }
 
+    /**
+     * Método responsável por retornar se a conta do usuário está expirada
+     *
+     * @return
+     */
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    /**
+     * Método responsável por retornar se a conta do usuário está bloqueada
+     *
+     * @return
+     */
     @Override
     public boolean isAccountNonLocked() {
         return this.isActive;
     }
 
+    /**
+     * Método responsável por retornar se as credenciais do usuário estão expiradas
+     *
+     * @return
+     */
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    /**
+     * Método responsável por retornar se o usuário está habilitado
+     *
+     * @return
+     */
     @Override
     public boolean isEnabled() {
         return this.isActive;
