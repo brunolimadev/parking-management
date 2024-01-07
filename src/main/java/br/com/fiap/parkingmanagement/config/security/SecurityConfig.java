@@ -1,5 +1,6 @@
 package br.com.fiap.parkingmanagement.config.security;
 
+import br.com.fiap.parkingmanagement.controller.exception.CustomAuthenticationFailureHandler;
 import br.com.fiap.parkingmanagement.filter.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -59,12 +60,17 @@ public class SecurityConfig {
                 // Regra para a realizar o logout
                 .requestMatchers(HttpMethod.POST, "/auth/logout").permitAll()
 
-                // Demais requisições serão autenticadas
+                // Regra para a permitir o acesso ao swagger
+                .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
+
+                // Demais requisições serão permitidas
                 .anyRequest().authenticated())
 
                 // Realiza verificação do jwt antes das requisições
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 
+                // Configura o tratamento de exceções para acesso não autorizado
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(new CustomAuthenticationFailureHandler()::onAuthenticationFailure))
                 .build();
     }
 
