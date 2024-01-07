@@ -33,6 +33,7 @@ public class JwtServiceImpl implements JwtService {
             return JWT.create()
                     .withIssuer("Parking Management")
                     .withSubject(user.getEmail())
+                    .withClaim("id", user.getId())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException e) {

@@ -41,7 +41,7 @@ public class ExceptionAdvice {
         ErrorDto errorDto = new ErrorDto(
                 "Erro interno",
                 "Recurso não encontrado.",
-                "404", null);
+                "400", null);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
     }
@@ -55,6 +55,17 @@ public class ExceptionAdvice {
                 "403", null);
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorDto);
+    }
+
+    @ExceptionHandler({VehicleException.class})
+    public ResponseEntity<ErrorDto> handleVehicleAlredyExistsException(VehicleException ex) {
+
+        ErrorDto errorDto = new ErrorDto(
+                ex.getTitle(),
+                ex.getMessage(),
+                "404", null);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
     }
 
 }
