@@ -4,7 +4,6 @@ package br.com.fiap.parkingmanagement.controller;
 import br.com.fiap.parkingmanagement.model.dto.AuthDto;
 import br.com.fiap.parkingmanagement.model.dto.SignResponseDto;
 import br.com.fiap.parkingmanagement.model.entity.User;
-import br.com.fiap.parkingmanagement.service.AuthService;
 import br.com.fiap.parkingmanagement.service.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,17 +32,23 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@Valid @RequestBody AuthDto credentials) throws Exception {
 
+        // Cria instancia de autenticação com os dados do usuário
         var userCredentials = new UsernamePasswordAuthenticationToken(credentials.email(), credentials.password());
 
+        // Autentica o usuário
         var authentication = authenticationManager.authenticate(userCredentials);
 
+        // Gera o token
         var jwt = jwtService.generateToken((User) authentication.getPrincipal());
 
+        // Adiciona o token no header da resposta
         HttpHeaders hearders = new HttpHeaders();
 
+        // Adiciona a header Authorization com o token
         hearders.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
-        SignResponseDto response = new SignResponseDto(true, userCredentials.getName());
+        // Cria o objeto de respota com o status e o nome do usuário
+        SignResponseDto response = new SignResponseDto(true, ((User) authentication.getPrincipal()).getName());
 
         return ResponseEntity.ok().headers(hearders).body(response);
     }
