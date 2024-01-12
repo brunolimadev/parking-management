@@ -41,7 +41,7 @@ public class ExceptionAdvice {
         ErrorDto errorDto = new ErrorDto(
                 "Erro interno",
                 "Recurso não encontrado.",
-                "400", null);
+                "404", null);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
     }
