@@ -9,4 +9,5 @@ public interface ZoneRepository extends MongoRepository<Zone, String> {
 
     Page<Zone> findAll(Pageable pageable);
 
+
 }

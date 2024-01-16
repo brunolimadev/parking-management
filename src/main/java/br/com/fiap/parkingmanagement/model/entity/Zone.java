@@ -1,15 +1,15 @@
 package br.com.fiap.parkingmanagement.model.entity;
 
 import lombok.Data;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document
 public class Zone {
-    @Id
-    String id;
+    @Id()
+    ObjectId _id;
     String areaName;
     String local;
     String side;
@@ -21,8 +21,6 @@ public class Zone {
     Integer r1MaxTimeCar;
     String r1WeekStartTime;
     String r1WeekEndTime;
-
-
     Double r1WeekValuePerHour;
     String r1SaturdayStartTime;
     String r1SaturdayEndTime;
@@ -59,4 +57,5 @@ public class Zone {
     String r3HolidayStartTime;
     String r3HolidayEndTime;
     Double r3HolidayValuePerHour;
+    Long zoneId;
 }

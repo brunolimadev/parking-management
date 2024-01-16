@@ -1,7 +1,7 @@
 package br.com.fiap.parkingmanagement.model.dto;
 
 public record ZoneDto(
-        String id,
+        Long id,
         String areaName,
         String local,
         String side,
