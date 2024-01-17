@@ -15,6 +15,12 @@ public class ViaCepServiceImpl implements ViaCepService {
     public ViaCepServiceImpl() {
     }
 
+    /**
+     * Método responsável por buscar um endereço pelo CEP
+     *
+     * @param cep
+     * @return
+     */
     @Override
     public AddressDto searchAddressByCep(String cep) {
         RestTemplate template = new RestTemplate();

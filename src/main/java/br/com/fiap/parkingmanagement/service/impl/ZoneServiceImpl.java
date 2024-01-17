@@ -34,11 +34,24 @@ public class ZoneServiceImpl implements ZoneService {
         this.mongoTemplate = mongoTemplate;
     }
 
+    /**
+     * Método responsável por buscar todas as zonas
+     *
+     * @param pageable
+     * @return
+     */
     @Override
     public Page<ZoneDto> findAll(Pageable pageable) {
         return convertPageZoneToDto(zoneRepository.findAll(pageable));
     }
 
+    /**
+     * Método responsável por buscar uma zona pelo local
+     *
+     * @param local
+     * @param cep
+     * @return
+     */
     @Override
     public List<ZoneDto> findByLocal(Optional<String> local, Optional<String> cep) {
 
@@ -68,6 +81,12 @@ public class ZoneServiceImpl implements ZoneService {
         return findAll(Pageable.unpaged()).getContent();
     }
 
+    /**
+     * Método responsável por buscar uma zona pelo id
+     *
+     * @param id
+     * @return
+     */
     private static Query getQueryByLocal(AddressDto addressDto) {
         var START_INDEX = 1;
         var addressChunks = Arrays.asList(addressDto.getLogradouro().split(" "));
@@ -90,6 +109,12 @@ public class ZoneServiceImpl implements ZoneService {
     }
 
 
+    /**
+     * Método responsável por converter uma Page de Zone para uma Page de ZoneDto
+     *
+     * @param zones
+     * @return
+     */
     private Page<ZoneDto> convertPageZoneToDto(Page<Zone> zones) {
 
         Page<ZoneDto> zonesDto = zones.map(zone -> {
@@ -164,6 +189,12 @@ public class ZoneServiceImpl implements ZoneService {
 
     }
 
+    /**
+     * Método responsável por converter uma List de Zone para uma List de ZoneDto
+     *
+     * @param zones
+     * @return
+     */
     private List<ZoneDto> convertListZoneToDto(List<Zone> zones) {
 
         List<ZoneDto> zonesDto = zones.stream().map(zone -> {
