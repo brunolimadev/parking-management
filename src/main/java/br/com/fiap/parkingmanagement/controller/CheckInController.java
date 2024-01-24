@@ -1,6 +1,6 @@
 package br.com.fiap.parkingmanagement.controller;
 
-import br.com.fiap.parkingmanagement.model.dto.CheckInDto;
+import br.com.fiap.parkingmanagement.model.dto.checkin.ParkingTicketDto;
 import br.com.fiap.parkingmanagement.model.entity.User;
 import br.com.fiap.parkingmanagement.service.CheckInService;
 import jakarta.validation.Valid;
@@ -20,9 +20,9 @@ public class CheckInController {
     private CheckInService checkInService;
 
     @PostMapping
-    public ResponseEntity<CheckInDto> create(@Valid @RequestBody CheckInDto checkInDto) {
+    public ResponseEntity<ParkingTicketDto> create(@RequestBody ParkingTicketDto parkingTicketDto) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        this.checkInService.save(checkInDto, user);
+        this.checkInService.save(parkingTicketDto, user);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
