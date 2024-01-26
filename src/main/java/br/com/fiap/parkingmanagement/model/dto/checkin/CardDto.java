@@ -8,6 +8,8 @@ public record CardDto(
         String type,
         @Pattern(regexp = "^(\\d{4}-){3}\\d{4}$", message = "Número de cartão inválido! Utilize o formato: xxxx-xxxx-xxxx-xxxx")
         String number,
+        @Pattern(regexp = "^\\d{2}\\/\\d{2}$", message = "Informe o mês de validade do cartão no formato: xx/xx")
+        String expiringDate,
         @Pattern(regexp = "^[0-9]{3}$", message = "CVV inválido! Utilize o formato: xxx")
         String verificationCode
 ) { }

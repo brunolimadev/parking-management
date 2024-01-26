@@ -1,6 +1,7 @@
 package br.com.fiap.parkingmanagement.model.dto.payment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
 
 public record PaymentResponseDto(
 
@@ -11,6 +12,9 @@ public record PaymentResponseDto(
         String paymentDetails,
 
         @JsonProperty(value = "Valor Pago")
-        double amount
+        double amount,
+
+        @Valid
+        StatusPaymentResponseDto status
 ) {
 }
