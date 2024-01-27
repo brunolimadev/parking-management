@@ -15,10 +15,18 @@ import java.util.List;
 
 @ControllerAdvice
 public class ExceptionAdvice {
+    @ExceptionHandler({RuntimeException.class})
+    public ResponseEntity<ErrorDto> handleRuntimeException(RuntimeException runtimeException) {
+        ErrorDto errorDto = new ErrorDto(
+                "Ocorreu um erro interno",
+                runtimeException.getMessage(),
+                "500", null);
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDto);
+    }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<ErrorDto> handleValidationException(MethodArgumentNotValidException ex) {
-
         List<ErrorFieldDto> errorFields = new ArrayList<>();
 
         ex.getBindingResult().getFieldErrors().forEach(error -> {
@@ -37,7 +45,6 @@ public class ExceptionAdvice {
 
     @ExceptionHandler({NoResourceFoundException.class})
     public ResponseEntity<ErrorDto> handleNotFoundException(NoResourceFoundException ex) {
-
         ErrorDto errorDto = new ErrorDto(
                 "Erro interno",
                 "Recurso não encontrado.",
@@ -48,7 +55,6 @@ public class ExceptionAdvice {
 
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<ErrorDto> handleAccessDenyException(AccessDeniedException ex) {
-
         ErrorDto errorDto = new ErrorDto(
                 "Credenciais inválidas",
                 "Suas credenciais são inválidas para acessar este recurso.",
@@ -59,10 +65,19 @@ public class ExceptionAdvice {
 
     @ExceptionHandler({VehicleException.class})
     public ResponseEntity<ErrorDto> handleVehicleAlredyExistsException(VehicleException ex) {
-
         ErrorDto errorDto = new ErrorDto(
                 ex.getTitle(),
                 ex.getMessage(),
+                "404", null);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
+    }
+
+    @ExceptionHandler({PaymentException.class})
+    public ResponseEntity<ErrorDto> handlePaymentExceptionException(PaymentException paymentException) {
+        ErrorDto errorDto = new ErrorDto(
+                paymentException.getTitle(),
+                paymentException.getMessage(),
                 "404", null);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);

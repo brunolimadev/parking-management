@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 
 public record PaymentResponseDto(
-
         @JsonProperty(value = "Forma de Pagamento")
         String formOfPayment,
 

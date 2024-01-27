@@ -22,17 +22,21 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentResponseDto cardPayment(PaymentDto paymentDto) {
-
-        String numberCard = applyMaskCardNumber(paymentDto);
-        String typeCard = checkTypeCard(paymentDto);
-        double amount = paymentDto.amount();
-        String cardExpirationDate = paymentDto.card().expiringDate();
-        StatusPaymentResponseDto statusPaymentResponseDto = validateCardExpirationDate(cardExpirationDate);
-        return new PaymentResponseDto(typeCard, numberCard, amount, statusPaymentResponseDto);
+        try {
+            String numberCard = applyMaskCardNumber(paymentDto);
+            String typeCard = checkTypeCard(paymentDto);
+            double amount = paymentDto.amount();
+            String cardExpirationDate = paymentDto.card().expiringDate();
+            StatusPaymentResponseDto statusPaymentResponseDto = validateCardExpirationDate(cardExpirationDate);
+            return new PaymentResponseDto(typeCard, numberCard, amount, statusPaymentResponseDto);
+        } catch (PaymentException paymentException) {
+            throw new PaymentException(paymentException.getTitle(), paymentException.getMessage());
+        } catch (Exception exception) {
+            throw new RuntimeException("Não foi possível processar o pagamento");
+        }
     }
 
     private StatusPaymentResponseDto validateCardExpirationDate(String cardExpirationDate) {
-
         boolean status;
         String message = "";
 
@@ -55,7 +59,6 @@ public class PaymentServiceImpl implements PaymentService {
                 message = "A data de validade do cartão está expirada!";
             }
             return new StatusPaymentResponseDto(status, message);
-
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -73,5 +76,3 @@ public class PaymentServiceImpl implements PaymentService {
         }
     }
 }
-
-

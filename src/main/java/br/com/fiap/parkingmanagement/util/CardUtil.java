@@ -3,7 +3,6 @@ package br.com.fiap.parkingmanagement.util;
 public class CardUtil {
 
     public static String maskCardNumber(String cardNumber) {
-
         String firstFourDigits = cardNumber.substring(0, 4);
         String lastFourDigits = cardNumber.substring(cardNumber.length() - 4);
 

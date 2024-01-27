@@ -1,15 +1,12 @@
 package br.com.fiap.parkingmanagement.model.dto.checkin;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotBlank;
 
 public record PaymentDto(
-        @NotEmpty(message = "Informe a modalidade de pagamento!")
+        @NotBlank(message = "Informe a modalidade de pagamento!")
         String type,
         @Valid
         CardDto card,
-
-
         double amount
 ) { }

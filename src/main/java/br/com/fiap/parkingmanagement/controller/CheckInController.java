@@ -20,7 +20,7 @@ public class CheckInController {
     private CheckInService checkInService;
 
     @PostMapping
-    public ResponseEntity<ParkingTicketDto> create(@RequestBody ParkingTicketDto parkingTicketDto) {
+    public ResponseEntity<ParkingTicketDto> create(@Valid @RequestBody ParkingTicketDto parkingTicketDto) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         this.checkInService.save(parkingTicketDto, user);
 
