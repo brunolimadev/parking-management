@@ -8,6 +8,7 @@ import br.com.fiap.parkingmanagement.model.entity.checkin.Vehicle;
 import br.com.fiap.parkingmanagement.model.entity.checkin.Zone;
 import br.com.fiap.parkingmanagement.repository.CheckInRepository;
 import br.com.fiap.parkingmanagement.service.CheckInService;
+import br.com.fiap.parkingmanagement.service.HolidayService;
 import br.com.fiap.parkingmanagement.service.ZoneService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class CheckInServiceImpl implements CheckInService {
     @Autowired
     private ZoneService zoneService;
 
+    @Autowired
+    private HolidayService holidayService;
+
     @Override
     public void save (ParkingTicketDto parkingTicketDto, User user) {
         ParkingTicket response = this.checkInRepository.save(assembleParkingTicketEntity(parkingTicketDto));
@@ -33,7 +37,6 @@ public class CheckInServiceImpl implements CheckInService {
     }
 
     private ParkingTicket assembleParkingTicketEntity(ParkingTicketDto parkingTicketDto) {
-        getPriceZonePerHour(parkingTicketDto);
         return new ParkingTicket(
                 parkingTicketDto.period(),
                 LocalDateTime.now().toString(),
@@ -48,23 +51,26 @@ public class CheckInServiceImpl implements CheckInService {
     }
 
     private Double getPriceZonePerHour(ParkingTicketDto parkingTicketDto) {
-        List<ZoneDto> zoneDtoList = zoneService.findByLocal(Optional.ofNullable(parkingTicketDto.address().local()), Optional.<String>empty());
+        List<ZoneDto> zoneDtoList = this.zoneService.findByLocal(Optional.ofNullable(parkingTicketDto.address().local()), Optional.<String>empty());
 
-        Optional<ZoneDto> zoneDto = zoneDtoList
+        ZoneDto zoneDto = zoneDtoList
                 .stream()
                 .filter(zone -> zone.id() == Long.parseLong(parkingTicketDto.address().id()))
-                .findFirst();
+                .findFirst().orElseThrow();
 
         DayOfWeek day = LocalDateTime.now().getDayOfWeek();
 
         if (day == DayOfWeek.SATURDAY) {
-            return zoneDto.get().r1SaturdayValuePerHour();
+            return zoneDto.r1SaturdayValuePerHour();
         }
         if (day == DayOfWeek.SUNDAY) {
-            return zoneDto.get().r1SundayValuePerHour();
+            return zoneDto.r1SundayValuePerHour();
+        }
+        if (this.holidayService.isHoliday(LocalDateTime.now())) {
+            return zoneDto.r1HolidayValuePerHour();
         }
 
-        return zoneDto.get().r1WeekValuePerHour();
+        return zoneDto.r1WeekValuePerHour();
     }
 
     private Double calculatePaymentValue(ParkingTicketDto parkingTicketDto) {
