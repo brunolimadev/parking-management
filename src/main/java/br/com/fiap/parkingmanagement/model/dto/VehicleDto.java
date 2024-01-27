@@ -9,7 +9,6 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public record VehicleDto(
-
         @NotNull(message = "O nome do veículo não pode ser nulo.")
         String name,
         @NotNull(message = "O modelo do veículo não pode ser nulo.")
