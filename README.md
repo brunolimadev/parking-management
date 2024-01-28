@@ -296,4 +296,4 @@ http://localhost:8080/parking-management/api/swagger-ui/index.html#/
 ]
 ```
 ## 😎 Collection para testes
-Inserir URL da Collection ao finalizar....
+[Fiap - Parking Management.postman_collection.json](https://github.com/brunolimadev/parking-management/src/test/resources/Fiap - Parking Management.postman_collection.json)
