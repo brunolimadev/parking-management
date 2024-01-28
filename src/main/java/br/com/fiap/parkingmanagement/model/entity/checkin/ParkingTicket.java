@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 @Getter
 @Setter
 @ToString
+@Builder
 public class ParkingTicket {
     @Id
     private String id;

@@ -40,24 +40,23 @@ public class CheckInServiceImpl implements CheckInService {
         User newUser = new User();
         newUser.setId(user.getId());
         newUser.setCreatedAt(LocalDateTime.now());
-        ParkingTicket response = this.checkInRepository.save(assembleParkingTicketEntity(parkingTicketDto, newUser));
-//        System.out.println(new Gson().toJson(response));
+        this.checkInRepository.save(assembleParkingTicketEntity(parkingTicketDto, newUser));
     }
 
     private ParkingTicket assembleParkingTicketEntity(ParkingTicketDto parkingTicketDto, User user) {
-        return new ParkingTicket(
-                null,
-                parkingTicketDto.period(),
-                LocalDateTime.now().toString(),
-                LocalDateTime.now().plusHours(Long.parseLong(parkingTicketDto.period())).toString(),
-                new Zone(parkingTicketDto.address().id(), parkingTicketDto.address().local(), String.valueOf(getPriceZonePerHour(parkingTicketDto))),
-                new Vehicle(parkingTicketDto.vehicle().type().name(), parkingTicketDto.vehicle().plate()),
-                new Payment(
+
+        return ParkingTicket.builder()
+                .period(parkingTicketDto.period())
+                .initialDate(LocalDateTime.now().toString())
+                .finalDate(LocalDateTime.now().plusHours(Long.parseLong(parkingTicketDto.period())).toString())
+                .zone(new Zone(parkingTicketDto.address().id(), parkingTicketDto.address().local(), String.valueOf(getPriceZonePerHour(parkingTicketDto))))
+                .vehicle(new Vehicle(parkingTicketDto.vehicle().type().name(), parkingTicketDto.vehicle().plate()))
+                .payment(new Payment(
                         parkingTicketDto.payment().type(),
                         new Card(parkingTicketDto.payment().card().type(), parkingTicketDto.payment().card().number(), parkingTicketDto.payment().card().verificationCode()),
-                        String.valueOf(calculatePaymentValue(parkingTicketDto))),
-                user
-        );
+                        String.valueOf(calculatePaymentValue(parkingTicketDto))))
+                .user(user)
+                .build();
     }
 
     private Double getPriceZonePerHour(ParkingTicketDto parkingTicketDto) {

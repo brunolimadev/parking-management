@@ -10,4 +10,6 @@ public interface ParkingTicketService {
     ResponseEntity<TicketDetailDto> getParkingTicketDetailByTicketId(String id);
 
     ResponseEntity<List<ParkingTicket>> getAllParkingTicket();
+
+    ResponseEntity<List<ParkingTicket>> getParkingTicketByUserId(String userId);
 }
