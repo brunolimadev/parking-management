@@ -4,10 +4,8 @@ import br.com.fiap.parkingmanagement.controller.exception.PaymentException;
 import br.com.fiap.parkingmanagement.model.dto.ZoneDto;
 import br.com.fiap.parkingmanagement.model.dto.checkin.ParkingTicketDto;
 import br.com.fiap.parkingmanagement.model.dto.payment.PaymentResponseDto;
-import br.com.fiap.parkingmanagement.model.entity.*;
+import br.com.fiap.parkingmanagement.model.entity.User;
 import br.com.fiap.parkingmanagement.model.entity.checkin.*;
-import br.com.fiap.parkingmanagement.model.entity.checkin.Vehicle;
-import br.com.fiap.parkingmanagement.model.entity.checkin.Zone;
 import br.com.fiap.parkingmanagement.repository.CheckInRepository;
 import br.com.fiap.parkingmanagement.service.CheckInService;
 import br.com.fiap.parkingmanagement.service.HolidayService;
@@ -37,14 +35,15 @@ public class CheckInServiceImpl implements CheckInService {
     public PaymentService paymentService;
 
     @Override
-    public void save (ParkingTicketDto parkingTicketDto, User user) {
+    public void save(ParkingTicketDto parkingTicketDto, User user) {
         validatePayment(parkingTicketDto);
-        ParkingTicket response = this.checkInRepository.save(assembleParkingTicketEntity(parkingTicketDto));
+        ParkingTicket response = this.checkInRepository.save(assembleParkingTicketEntity(parkingTicketDto, user));
         System.out.println(new Gson().toJson(response));
     }
 
-    private ParkingTicket assembleParkingTicketEntity(ParkingTicketDto parkingTicketDto) {
+    private ParkingTicket assembleParkingTicketEntity(ParkingTicketDto parkingTicketDto, User user) {
         return new ParkingTicket(
+                "",
                 parkingTicketDto.period(),
                 LocalDateTime.now().toString(),
                 LocalDateTime.now().plusHours(Long.parseLong(parkingTicketDto.period())).toString(),
@@ -53,8 +52,9 @@ public class CheckInServiceImpl implements CheckInService {
                 new Payment(
                         parkingTicketDto.payment().type(),
                         new Card(parkingTicketDto.payment().card().type(), parkingTicketDto.payment().card().number(), parkingTicketDto.payment().card().verificationCode()),
-                        String.valueOf(calculatePaymentValue(parkingTicketDto)))
-                );
+                        String.valueOf(calculatePaymentValue(parkingTicketDto))),
+                user
+        );
     }
 
     private Double getPriceZonePerHour(ParkingTicketDto parkingTicketDto) {
