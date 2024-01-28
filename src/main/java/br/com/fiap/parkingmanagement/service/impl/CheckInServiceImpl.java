@@ -37,13 +37,16 @@ public class CheckInServiceImpl implements CheckInService {
     @Override
     public void save(ParkingTicketDto parkingTicketDto, User user) {
         validatePayment(parkingTicketDto);
-        ParkingTicket response = this.checkInRepository.save(assembleParkingTicketEntity(parkingTicketDto, user));
-        System.out.println(new Gson().toJson(response));
+        User newUser = new User();
+        newUser.setId(user.getId());
+        newUser.setCreatedAt(LocalDateTime.now());
+        ParkingTicket response = this.checkInRepository.save(assembleParkingTicketEntity(parkingTicketDto, newUser));
+//        System.out.println(new Gson().toJson(response));
     }
 
     private ParkingTicket assembleParkingTicketEntity(ParkingTicketDto parkingTicketDto, User user) {
         return new ParkingTicket(
-                "",
+                null,
                 parkingTicketDto.period(),
                 LocalDateTime.now().toString(),
                 LocalDateTime.now().plusHours(Long.parseLong(parkingTicketDto.period())).toString(),
