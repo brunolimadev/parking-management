@@ -5,14 +5,11 @@ import br.com.fiap.parkingmanagement.model.entity.checkin.ParkingTicket;
 import br.com.fiap.parkingmanagement.repository.CheckInRepository;
 import br.com.fiap.parkingmanagement.service.ParkingTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class ParkingTicketServiceImpl implements ParkingTicketService {
@@ -40,12 +37,7 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
     }
 
     @Override
-    public ResponseEntity<List<ParkingTicket>> getAllParkingTicket() {
-        return ResponseEntity.status(HttpStatus.OK).body(this.checkInRepository.findAll());
-    }
-
-    @Override
-    public ResponseEntity<List<ParkingTicket>> getParkingTicketByUserId(String userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.checkInRepository.findByUserId(userId));
+    public Page<ParkingTicket> getParkingTicketByUserId(String userId, Pageable pageable) {
+        return this.checkInRepository.findByUserId(userId, pageable);
     }
 }

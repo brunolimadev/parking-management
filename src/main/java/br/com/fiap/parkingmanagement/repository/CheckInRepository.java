@@ -1,12 +1,12 @@
 package br.com.fiap.parkingmanagement.repository;
 
 import br.com.fiap.parkingmanagement.model.entity.checkin.ParkingTicket;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.List;
-
 public interface CheckInRepository extends MongoRepository<ParkingTicket, String> {
-    List<ParkingTicket> findByUserId(String userId);
+    Page<ParkingTicket> findByUserId(String userId, Pageable pageable);
 
     ParkingTicket findByIdAndUserId(String id, String userId);
 }
