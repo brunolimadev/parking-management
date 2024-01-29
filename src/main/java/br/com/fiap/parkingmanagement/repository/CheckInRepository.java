@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CheckInRepository extends MongoRepository<ParkingTicket, String> {
     List<ParkingTicket> findByUserId(String userId);
+
+    ParkingTicket findByIdAndUserId(String id, String userId);
 }

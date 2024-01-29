@@ -21,9 +21,13 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
     private CheckInRepository checkInRepository;
 
     @Override
-    public ResponseEntity<TicketDetailDto> getParkingTicketDetailByTicketId(String id) {
-        ParkingTicket checking = this.checkInRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cartão de estacionamento não encontrado!"));
+    public ResponseEntity<TicketDetailDto> getParkingTicketDetailByTicketId(String id, String userId) {
+        ParkingTicket checking = this.checkInRepository.findByIdAndUserId(id, userId);
+
+        if (checking == null) {
+            throw new RuntimeException("Cartão de estacionamento não encontrado!");
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 new TicketDetailDto(
                         checking.getZone().getLocal(),

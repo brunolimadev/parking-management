@@ -30,8 +30,9 @@ public class ParkingTicketController {
     }
 
     @GetMapping("/{ticket_id}/details")
-    public ResponseEntity<TicketDetailDto> getParkingTicketDetail(@PathVariable("ticket_id") String id) {
-        return this.parkingTicketService.getParkingTicketDetailByTicketId(id);
+    public ResponseEntity<TicketDetailDto> getParkingTicketDetail(@PathVariable("ticket_id") String ticketId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return this.parkingTicketService.getParkingTicketDetailByTicketId(ticketId, user.getId());
     }
 
 }
