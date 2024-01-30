@@ -50,4 +50,4 @@ Ao adotar as mais recentes tecnologias do mercado, nosso sistema se destaca pela
 
 
 ## 😎 Collection para testes
-[Fiap - Parking Management.postman_collection](https://github.com/brunolimadev/parking-management/blob/9e60a6a4253f29ba4846891b5439f7190e77976e/src/test/resources/Parking-management.postman_collection.zip?raw=true)
+[Fiap - Parking Management.postman_collection](https://github.com/brunolimadev/parking-management/blob/c0e274dd3e4a804d6b9acc06b44e483ab12dad14/src/test/resources/Parking-management.postman_collection.zip?raw=true)
